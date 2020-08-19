@@ -336,7 +336,8 @@ const animeContentHandler = async(id) => {
     $('div#cats a').each(async(index , element) => {
       const $element = $(element);
       const name = $element.text();
-      genres.push({name: name});
+      const slug = $element.attr('href');
+      genres.push({name: name, slug: slug.split('/')[4]});
     });
     const content = {
       title: title,
