@@ -85,7 +85,17 @@ async function getAnimeVideoByServer(id , chapter) {
 
   return await Promise.all(serverList);
 }
+async function getMedia(id1, id2, id3, authentication){
+  let  URL = [];
+  URL.push(axios.get(`https://jkanime.net/stream/jkmedia/${id1}/${id2}/${id3}/${authentication}`, {
+    maxRedirects: 1,
+    validateStatus: null
+  }).then(res => {
+    return res.headers.location || null;
+  }))
 
+  return await Promise.all(URL);
+}
 async function getVideoURL(url) {
   // This requests the underlying iframe page
   const { data } = await axios.get(url);
@@ -95,13 +105,16 @@ async function getVideoURL(url) {
     // Sometimes the video is directly embedded
     const src = $(video).find('source').attr('src');
     if(src.includes("jkmedia")){
-      return axios.get(src, {
+      return src;
+      /*
+      axios.get(src, {
             maxRedirects: 0,
             validateStatus: null
           })
           .then(res => {
             return res.headers.location || null;
           })
+      */
     }
     return src || null;
   }
@@ -295,12 +308,20 @@ const animeContentHandler = async(id) => {
   try{
     episodes_aired = eps_temp_list[eps_temp_list.length-1].split('-')[1].trim();
   }catch(err){}
-  const episodes_List = Array.from({length: eps_temp_list} , (v , k) =>{
+  const episodes_List = [], range = episodes_aired;
+
+  for(var i = 1; i < range; i++){
+    episodes_List[i]={
+      episode: i,
+      id: id
+    }
+  }
+  /*const episodes_List = Array.from(eps_temp_list , (v , k) =>{
     return{
       episode: k + 1,
       id: id
     }
-  });
+  });*/
 
   $('div#container div.serie-info').each(async(index, element) => {
     const $element = $(element);
@@ -328,7 +349,7 @@ const animeContentHandler = async(id) => {
       episodes: episodes_aired,
       episodeList: episodes_List
     }
-    console.log(content)
+    //console.log(content)
 
     extra.push(content);
   })
@@ -372,6 +393,7 @@ module.exports = {
   getAnimesListByLetter,
   searchAnime,
   getAnimeVideoByServer,
+  getMedia,
   getAnimeDetails,
   schedule
 }

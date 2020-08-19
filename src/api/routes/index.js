@@ -86,14 +86,28 @@ router.get('/video/:id/:chapter', (req , res) => {
     });
 });
 router.get('/anime/:id', (req , res) => {
-  const id = req.params.id;
-  api.getAnimeDetails(id)
-    .then(anime => {
-      res.status(200).json(anime[0]);
-    }).catch((err) =>{
-      console.log(err)
+    const id = req.params.id;
+    api.getAnimeDetails(id)
+        .then(anime => {
+            res.status(200).json(anime[0]);
+        }).catch((err) =>{
+        console.log(err)
     });
 });
+
+router.get('/media/:id1/:id2/:id3/:authentication/', (req , res) => {
+    const id1 = req.params.id1;
+    const id2 = req.params.id2;
+    const id3 = req.params.id3;
+    const authentication = req.params.authentication;
+    api.getMedia(id1, id2, id3, authentication)
+        .then(anime => {
+            res.status(200).json(anime);
+        }).catch((err) =>{
+        console.log(err)
+    });
+});
+
 router.get('/schedule/:day', (req , res) => {
   const day = req.params.day;
   api.schedule(day)
