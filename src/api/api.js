@@ -295,7 +295,7 @@ const animeContentHandler = async(id) => {
   try{
     episodes_aired = eps_temp_list[eps_temp_list.length-1].split('-')[1].trim();
   }catch(err){}
-  const episodes_List = Array.from({length: episodes_aired} , (v , k) =>{
+  const episodes_List = Array.from({length: eps_temp_list} , (v , k) =>{
     return{
       episode: k + 1,
       id: id
