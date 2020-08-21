@@ -85,19 +85,27 @@ async function getAnimeVideoByServer(id , chapter) {
 
   return await Promise.all(serverList);
 }
+async function getAuth(){
+  let authentication = [];
+  authentication.push(this.getAnimeVideoByServer('one-piece','1')
+      .then(sources => {
+        const getServe = sources.find(source => source.server === 'Desuka');
+        return (getServe.video.split('/')[8]);
+      }).catch((err) =>{
+        console.log(err)
+      }));
+  return await Promise.all(authentication);
+}
 async function getMedia(id1, id2, id3){
+  let sourcekey = await this.getAuth();
   let  URL = [];
-  const authentication = '46ebf17ac37f6e7ed7b585f0ec1f06f7';
-  URL.push(axios.head(`https://jkanime.net/stream/jkmedia/${id1}/${id2}/${id3}/${authentication}/`, {
+  URL.push(axios.head(`https://jkanime.net/stream/jkmedia/${id1}/${id2}/${id3}/${sourcekey}/`, {
     maxRedirects: 0,
     redirect: 'manual',
     validateStatus: null
-
   }).then(res => {
-
     return res.headers.location || null;
-
-  }))
+  }));
 
   return await Promise.all(URL);
 }
@@ -400,6 +408,7 @@ module.exports = {
   searchAnime,
   getAnimeVideoByServer,
   getMedia,
+  getAuth,
   getAnimeDetails,
   schedule
 }

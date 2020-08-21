@@ -101,6 +101,7 @@ router.get('/media/:id1/:id2/:id3/', (req , res) => {
     const id3 = req.params.id3;
     api.getMedia(id1, id2, id3)
         .then(anime => {
+            //res.status(200).json(anime);
             res.redirect(anime);
         }).catch((err) =>{
         console.log(err)
