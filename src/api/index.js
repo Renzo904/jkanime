@@ -16,10 +16,10 @@ router.get('/', (req, res) => {
         'getAnimesListByLetter': '/api/v1/letter/[:letter]/[:page]',
         'searchAnime': '/api/v1/search/[:title]',
         'getAnimeVideoByServer': '/api/v1/video/[:id]/[:chapter]',
-        'getMedia': '/api/v1/media/[:id1]/[:id2]/[:id3]/[:authentication]',
+        'getMedia': '/api/v1/media/[:id1]/[:id2]/[:id3]/',
         'schedule': '/api/v1/schedule/[:day]'
       }
-    ]  
+    ]
   });
 });
 

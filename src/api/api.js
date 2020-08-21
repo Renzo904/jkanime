@@ -85,13 +85,18 @@ async function getAnimeVideoByServer(id , chapter) {
 
   return await Promise.all(serverList);
 }
-async function getMedia(id1, id2, id3, authentication){
+async function getMedia(id1, id2, id3){
   let  URL = [];
-  URL.push(axios.get(`https://jkanime.net/stream/jkmedia/${id1}/${id2}/${id3}/${authentication}`, {
-    maxRedirects: 1,
+  const authentication = '46ebf17ac37f6e7ed7b585f0ec1f06f7';
+  URL.push(axios.head(`https://jkanime.net/stream/jkmedia/${id1}/${id2}/${id3}/${authentication}/`, {
+    maxRedirects: 0,
+    redirect: 'manual',
     validateStatus: null
+
   }).then(res => {
+
     return res.headers.location || null;
+
   }))
 
   return await Promise.all(URL);
@@ -223,7 +228,7 @@ const getAnimesByGender = async (gender , page) => {
     const episodes = $element.find('span.eps-num').first().text().replace(/[^0-9]/g, "");
     const id = $element.find('a.let-link').attr('href').split('/')[3];
     const poster = $element.find('a').children('img').attr('src');
-    
+
     promises.push(animeContentHandler(id).then(extra => ({
       title: title,
       id: id,
